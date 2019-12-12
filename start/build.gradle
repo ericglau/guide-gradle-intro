@@ -16,7 +16,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.0-SNAPSHOT'
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.7'
     }
 }
 
@@ -29,6 +29,8 @@ dependencies {
     testCompile group:'commons-httpclient', name:'commons-httpclient', version:'3.1'
     testCompile group:'junit', name:'junit', version:'4.12'
     libertyRuntime group:'io.openliberty', name:'openliberty-kernel', version:'[19.0.0.12,)'
+libertyFeature 'io.openliberty.features:mpHealth-1.0:19.0.0.12'
+libertyFeature 'io.openliberty.features:mpHealth-2.0:19.0.0.12'
 }
 
 ext {
@@ -40,16 +42,23 @@ ext {
 
 liberty {
     server {
+        //tag::name[]
         name = "${appName}Server"
-        serverXmlFile = file("src/main/liberty/config/server.xml")
+        //end::name[]
+        //tag::configfile[]
+        configFile = file("src/main/liberty/config/server.xml")
+        //end::configfile[]
+        //tag::bootstrapproperties[]
         bootstrapProperties = ['default.http.port': testServerHttpPort,
                                'default.https.port': testServerHttpsPort,
                                'app.context.root': warContext]
+        //end::bootstrapproperties[]
+        //tag::packageliberty[]
         packageLiberty {
-            packageDirectory = "$buildDir";
-            packageName = "${appName}"
+            archive = "$buildDir/${appName}.zip"
             include = "usr"
         }
+        //end::packageliberty[]
     }
 }
 
