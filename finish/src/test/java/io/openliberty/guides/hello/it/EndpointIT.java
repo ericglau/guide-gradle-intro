@@ -26,7 +26,7 @@ public class EndpointIT {
     @BeforeClass
     // tag::init[]
     public static void init() {
-        String port = System.getProperty("liberty.test.port");
+        String port = System.getProperty("liberty.http.port");
         String war = System.getProperty("war.name");
         URL = "http://localhost:" + port + "/" + war + "/" + "servlet";
     }
